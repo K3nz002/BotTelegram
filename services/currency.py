@@ -11,7 +11,7 @@ async def get_usd_rate() -> str:
                 data = response.json().get("USDBRL", {})
                 if data and "bid" in data:
                     bid = float(data["bid"])
-                    pct_change = data.get["pctChange", "0"]
+                    pct_change = data.get("pctChange", "0")
                     return f"💵 *Dólar (USD/BRL)*: R$ {bid:.2f} ({pct_change}%)"
                 else:
                     raise ValueError("Dados da cotação inválidos")

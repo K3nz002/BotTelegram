@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from services.currency import get_usd_rate
 from services.world_news import get_latest_world_news
@@ -18,15 +19,15 @@ async def send_daily_digest(context):
     # Busca e filtra apenas notícias novas por categoria
     usd_info = await get_usd_rate()
     hltv_news = filter_new(
-        get_latest_hltv_news("https://www.hltv.org/rss/news", limit=5),
+        await asyncio.to_thread(get_latest_hltv_news, "https://www.hltv.org/rss/news", 5),
         seen, "hltv"
     )
     world_news = filter_new(
-        get_latest_world_news("https://admin.cnnbrasil.com.br/feed/", limit=5),
+        await asyncio.to_thread(get_latest_world_news, "https://admin.cnnbrasil.com.br/feed/", 5),
         seen, "world"
     )
     football_news = filter_new(
-        get_latest_football_news("https://www.espn.com.br/rss", limit=5),
+        await asyncio.to_thread(get_latest_football_news, "https://www.espn.com.br/rss", 5),
         seen, "football"
     )
 

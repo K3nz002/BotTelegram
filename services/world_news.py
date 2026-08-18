@@ -5,7 +5,7 @@ def get_latest_world_news(rss_url: str, limit: int = 3) -> list:
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
     
     try:
-        with httpx.AsyncClient(timeout=10.0, headers=headers, follow_redirects=True) as client:
+        with httpx.Client(timeout=10.0, headers=headers, follow_redirects=True) as client:
             response = client.get(rss_url)
             feed = feedparser.parse(response.content)
             articles = []
