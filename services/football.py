@@ -1,23 +1,22 @@
-import logging
 import httpx
 import feedparser
 
-logger = logging.getLogger(__name__)
-
-def get_latest_football_news(rss_url: str, limit: int = 3) -> list:
+def get_latest_football_news(limit: int = 3) -> list:
+    url = "https://www.espn.com.br/rss"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-    
+
     try:
         with httpx.Client(timeout=10.0, headers=headers, follow_redirects=True) as client:
-            response = client.get(rss_url)
-            feed = feedparser.parse(response.text)
-            articles = []
+            resp = client.get(url)
+            feed = feedparser.parse(resp.content)
+
+            news = []
             for entry in feed.entries[:limit]:
-                articles.append({
-                    "title": getattr(entry, "title", "").strip(),
-                    "link": getattr(entry, "link", "").strip()
+                news.append({
+                    "title": entry.title,
+                    "link": entry.link
                 })
-            return articles
+            return news
     except Exception as e:
-        logger.error("Erro ao buscar notícias de futebol: %s", e)
+        print(f"Erro ao buscar notícias de futebol: {e}")
         return []

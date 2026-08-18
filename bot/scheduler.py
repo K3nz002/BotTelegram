@@ -28,7 +28,7 @@ async def send_daily_digest(context):
         seen, "world"
     )
     football_news = filter_new(
-        await asyncio.to_thread(get_latest_football_news, "https://www.espn.com.br/rss", 5),
+        await asyncio.to_thread(get_latest_football_news, 5),
         seen, "football"
     )
 
