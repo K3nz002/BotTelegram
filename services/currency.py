@@ -12,10 +12,10 @@ async def get_usd_rate() -> str:
                 if data and "bid" in data:
                     bid = float(data["bid"])
                     pct_change = data.get("pctChange", "0")
-                    return f"💵 *Dólar (USD/BRL)*: R$ {bid:.2f} ({pct_change}%)"
+                    return f"💵 <b>Dólar (USD/BRL)</b>: R$ {bid:.2f} ({pct_change}%)"
                 else:
                     raise ValueError("Dados da cotação inválidos")
             else:
                 raise ValueError(f"Erro ao buscar cotação: {response.status_code}")
     except Exception as e:
-        return f"💵 *Dólar (USD/BRL)*: Não disponível ({e})"
+        return f"💵 <b>Dólar (USD/BRL)</b>: Não disponível"

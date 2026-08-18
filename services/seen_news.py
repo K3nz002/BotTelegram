@@ -83,10 +83,15 @@ def filter_new(
     mas o save no disco só acontece em `save_seen()`, chamado pelo scheduler
     depois que o envio for confirmado.
     """
+    if not isinstance(articles, list):
+        return []
+
     category_seen = seen.setdefault(category, {})
     new_articles = []
 
     for article in articles:
+        if not isinstance(article, dict):
+            continue
         link = article.get("link", "")
         if link and link not in category_seen:
             new_articles.append(article)

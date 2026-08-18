@@ -1,4 +1,5 @@
 import asyncio
+import html
 import logging
 from services.currency import get_usd_rate
 from services.world_news import get_latest_world_news
@@ -37,27 +38,33 @@ async def send_daily_digest(context):
         return
 
     # Monta a mensagem — omite seções sem novidades
-    msg = f"📊 *Resumo do Dia*\n\n{usd_info}\n"
+    msg = f"📊 <b>Resumo do Dia</b>\n\n{usd_info}\n"
 
     if hltv_news:
-        msg += "🎮 *HLTV (CS2)*:\n"
+        msg += "\n🎮 <b>HLTV (CS2)</b>:\n"
         for item in hltv_news:
-            msg += f"• [{item['title']}]({item['link']})\n\n"
+            title = html.escape(item["title"])
+            link = item["link"]
+            msg += f"• <a href=\"{link}\">{title}</a>\n"
 
     if world_news:
-        msg += "🌍 *Mundo*:\n"
+        msg += "\n🌍 <b>Mundo</b>:\n"
         for item in world_news:
-            msg += f"• [{item['title']}]({item['link']})\n\n"
+            title = html.escape(item["title"])
+            link = item["link"]
+            msg += f"• <a href=\"{link}\">{title}</a>\n"
 
     if football_news:
-        msg += "⚽ *Futebol*:\n"
+        msg += "\n⚽ <b>Futebol</b>:\n"
         for item in football_news:
-            msg += f"• [{item['title']}]({item['link']})\n\n"
+            title = html.escape(item["title"])
+            link = item["link"]
+            msg += f"• <a href=\"{link}\">{title}</a>\n"
 
     await context.bot.send_message(
         chat_id=chat_id,
         text=msg,
-        parse_mode="Markdown",
+        parse_mode="HTML",
         disable_web_page_preview=True,
     )
 

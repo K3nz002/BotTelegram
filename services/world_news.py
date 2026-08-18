@@ -1,5 +1,8 @@
+import logging
 import httpx
 import feedparser
+
+logger = logging.getLogger(__name__)
 
 def get_latest_world_news(rss_url: str, limit: int = 3) -> list:
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -7,13 +10,14 @@ def get_latest_world_news(rss_url: str, limit: int = 3) -> list:
     try:
         with httpx.Client(timeout=10.0, headers=headers, follow_redirects=True) as client:
             response = client.get(rss_url)
-            feed = feedparser.parse(response.content)
+            feed = feedparser.parse(response.text)
             articles = []
             for entry in feed.entries[:limit]:
                 articles.append({
-                    "title": entry.title,
-                    "link": entry.link
+                    "title": getattr(entry, "title", "").strip(),
+                    "link": getattr(entry, "link", "").strip()
                 })
             return articles
     except Exception as e:
-        return f"Erro ao buscar notícias: {e}"
+        logger.error("Erro ao buscar notícias do mundo: %s", e)
+        return []
