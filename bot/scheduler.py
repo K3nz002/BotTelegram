@@ -39,17 +39,17 @@ async def send_daily_digest(context):
     msg = f"📊 *Resumo do Dia*\n\n{usd_info}\n"
 
     if hltv_news:
-        msg += "\n🎮 *HLTV (CS2)*:\n"
+        msg += "🎮 *HLTV (CS2)*:\n"
         for item in hltv_news:
             msg += f"• [{item['title']}]({item['link']})\n\n"
 
     if world_news:
-        msg += "\n🌍 *Mundo*:\n"
+        msg += "🌍 *Mundo*:\n"
         for item in world_news:
             msg += f"• [{item['title']}]({item['link']})\n\n"
 
     if football_news:
-        msg += "\n⚽ *Futebol*:\n"
+        msg += "⚽ *Futebol*:\n"
         for item in football_news:
             msg += f"• [{item['title']}]({item['link']})\n\n"
 
