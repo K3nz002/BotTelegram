@@ -28,7 +28,7 @@ async def send_daily_digest(context):
         seen, "world"
     )
     football_news = filter_new(
-        await asyncio.to_thread(get_latest_football_news, 5),
+        await asyncio.to_thread(get_latest_football_news,"https://ge.globo.com/Esportes/Rss/0,,AS0-9645,00.xml", 5),
         seen, "football"
     )
 
@@ -45,21 +45,21 @@ async def send_daily_digest(context):
         for item in hltv_news:
             title = html.escape(item["title"])
             link = item["link"]
-            msg += f"• <a href=\"{link}\">{title}</a>\n"
+            msg += f"• <a href=\"{link}\">{title}</a>\n\n"
 
     if world_news:
         msg += "\n🌍 <b>Mundo</b>:\n"
         for item in world_news:
             title = html.escape(item["title"])
             link = item["link"]
-            msg += f"• <a href=\"{link}\">{title}</a>\n"
+            msg += f"• <a href=\"{link}\">{title}</a>\n\n"
 
     if football_news:
         msg += "\n⚽ <b>Futebol</b>:\n"
         for item in football_news:
             title = html.escape(item["title"])
             link = item["link"]
-            msg += f"• <a href=\"{link}\">{title}</a>\n"
+            msg += f"• <a href=\"{link}\">{title}</a>\n\n"
 
     await context.bot.send_message(
         chat_id=chat_id,
